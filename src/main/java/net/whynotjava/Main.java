@@ -73,7 +73,28 @@ public class Main{
 
             System.out.println("from client: "+is.readUTF()); 
 
-            os.flush();
+            new Thread(()->{
+                try {
+                while(true){
+                   System.out.println("[CLIENT] "+is.readUTF());
+                }
+                } catch (Exception e){
+                    System.out.println("Exit reader due to ERROR");
+                }
+            });
+
+            while(true){
+                System.out.println("Type messaage to send ['exit' to exit]:");
+                String line = scan.nextLine();
+
+                if (line.equals("exit")) {
+                    break;
+                }
+                os.writeUTF(line);
+                os.flush();
+            }
+
+            
             os.close();
             is.close();
 
@@ -93,7 +114,28 @@ public class Main{
 
             System.out.println("from server: "+is.readUTF()); 
 
-            os.flush();
+            new Thread(()->{
+                try {
+                while(true){
+                   System.out.println("[SERVER] "+is.readUTF());
+                }
+                } catch (Exception e){
+                    System.out.println("Exit reader due to ERROR");
+                }
+            });
+
+            while(true){
+                System.out.println("Type messaage to send ['exit' to exit]:");
+                String line = scan.nextLine();
+
+                if (line.equals("exit")) {
+                    break;
+                }
+                os.writeUTF(line);
+                os.flush();
+            }
+
+            
             os.close();
             is.close();
         }
