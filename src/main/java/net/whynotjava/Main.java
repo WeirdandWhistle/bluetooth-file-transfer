@@ -81,10 +81,10 @@ public class Main{
                 } catch (Exception e){
                     System.out.println("Exit reader due to ERROR");
                 }
-            });
+            }).start();
 
             while(true){
-                System.out.println("Type messaage to send ['exit' to exit]:");
+                System.out.print("Type messaage to send ['exit' to exit]:");
                 String line = scan.nextLine();
 
                 if (line.equals("exit")) {
@@ -125,7 +125,7 @@ public class Main{
             });
 
             while(true){
-                System.out.println("Type messaage to send ['exit' to exit]:");
+                System.out.print("Type messaage to send ['exit' to exit]:");
                 String line = scan.nextLine();
 
                 if (line.equals("exit")) {
