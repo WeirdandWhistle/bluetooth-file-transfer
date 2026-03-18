@@ -1,5 +1,6 @@
 package net.whynotjava;
 
+import java.io.*;
 import java.util.*;
 
 import javax.bluetooth.*;
@@ -9,6 +10,10 @@ import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 
 public class Main{
+
+    
+    
+
     public static void main(String[] args) {
         System.out.println("===== START =====");
         // System.out.println("DiscoveryAgent CACHED - "+DiscoveryAgent.CACHED);
@@ -40,22 +45,58 @@ public class Main{
 
         // ServiceRecord sr = ld.
 
-        boolean isDiscoverable = ld.setDiscoverable(DiscoveryAgent.GIAC);
-         System.out.println("Am I discoverable? " + isDiscoverable);
-        System.out.println("My Bluetooth Name: " + ld.getFriendlyName());  
-
         String serviceName = "JavaTestService";
         String serviceUUIDString = "1234";
         UUID serviceUUID = new UUID(serviceUUIDString, true);
 
-        String connURL = ("btspp://localhost:"+serviceUUID.toString()+";name="+serviceName);
+        if (server) {
+            
+        
 
-        StreamConnectionNotifier scn = (StreamConnectionNotifier) Connector.open(connURL);
-        ServiceRecord record = LocalDevice.getLocalDevice().getRecord(scn);
-        System.out.println("Service is live on channel: " + record.getConnectionURL(0, false));
-        System.out.println("accept and open!");
-        StreamConnection sc = scn.acceptAndOpen();
-        System.out.println("OPENED!");
+            boolean isDiscoverable = ld.setDiscoverable(DiscoveryAgent.GIAC);
+            System.out.println("Am I discoverable? " + isDiscoverable);
+            System.out.println("My Bluetooth Name: " + ld.getFriendlyName());  
+
+            String connURL = ("btspp://localhost:"+serviceUUID.toString()+";name="+serviceName);
+
+            StreamConnectionNotifier scn = (StreamConnectionNotifier) Connector.open(connURL);
+            ServiceRecord record = LocalDevice.getLocalDevice().getRecord(scn);
+            System.out.println("Service is live on channel: " + record.getConnectionURL(0, false));
+            System.out.println("accept and open!");
+            StreamConnection stream = scn.acceptAndOpen();
+            System.out.println("OPENED!");
+
+            DataOutputStream os = stream.openDataOutputStream();
+            DataInputStream is = stream.openDataInputStream();
+
+            os.writeUTF("Hello CLIENT!");  
+
+            System.out.println("from client: "+is.readUTF()); 
+
+            os.flush();
+            os.close();
+            is.close();
+
+           
+        } else{
+            System.out.println("trying to connect as CLIENT!");
+            // String connURL = "btspp://";
+
+            String connURL = da.selectService(serviceUUID, ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
+
+            StreamConnection stream = (StreamConnection) Connector.open(connURL);
+
+            DataOutputStream os = stream.openDataOutputStream();
+            DataInputStream is = stream.openDataInputStream();
+
+            os.writeUTF("Hello SEVER!");  
+
+            System.out.println("from server: "+is.readUTF()); 
+
+            os.flush();
+            os.close();
+            is.close();
+        }
 
 
         
