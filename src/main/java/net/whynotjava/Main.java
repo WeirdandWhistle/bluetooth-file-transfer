@@ -74,6 +74,7 @@ public class Main{
             System.out.println("from client: "+is.readUTF()); 
 
             new Thread(()->{
+                System.out.println("[INFO-SERVER] start read thead");
                 try {
                 while(true){
                    System.out.println("[CLIENT] "+is.readUTF());
@@ -90,6 +91,7 @@ public class Main{
                 if (line.equals("exit")) {
                     break;
                 }
+                System.out.println("[INFO] sending message: "+line);
                 os.writeUTF(line);
                 os.flush();
             }
@@ -115,6 +117,8 @@ public class Main{
             System.out.println("from server: "+is.readUTF()); 
 
             new Thread(()->{
+                System.out.println("[INFO-CLIENT] start read thead");
+
                 try {
                 while(true){
                    System.out.println("[SERVER] "+is.readUTF());
@@ -122,7 +126,7 @@ public class Main{
                 } catch (Exception e){
                     System.out.println("Exit reader due to ERROR");
                 }
-            });
+            }).start();
 
             while(true){
                 System.out.print("Type messaage to send ['exit' to exit]:");
