@@ -1,6 +1,9 @@
 package net.whynotjava;
-import javax.swing.*;
 import java.awt.*;
+
+import javax.swing.*;
+
+import net.whynotjava.Frame;
 
 public class Frame extends JFrame{
     public static int SCALE = 75;
@@ -13,6 +16,8 @@ public class Frame extends JFrame{
         this.requestFocus();
         this.requestFocusInWindow();
         this.setTitle("Bluetooth File Tranfer - Whynotjava");
+        this.setResizable(false);
+        this.setLayout(BorderLayout);
 
         this.pack();
 
@@ -20,8 +25,12 @@ public class Frame extends JFrame{
     }
     public void buildUI(){
         JPanel infoPanel = new JPanel();
-        infoPanel.setMaximumSize(new Dimension(4*SCALE,Y_SCALE*SCALE));
+        // infoPanel.setMaximumSize(new Dimension(4*SCALE,Y_SCALE*SCALE));
+        infoPanel.setMaximumSize(new Dimension(10,10));
         infoPanel.add(new JLabel("text"));
+
+        infoPanel.setLocation(100,100);
+        infoPanel.setBackground(Color.YELLOW);
 
         infoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
